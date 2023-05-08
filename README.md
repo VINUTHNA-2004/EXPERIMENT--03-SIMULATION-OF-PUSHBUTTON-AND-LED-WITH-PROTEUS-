@@ -112,7 +112,7 @@ int main(void)
 ![o2](https://user-images.githubusercontent.com/95067307/236769895-dcfbfa6e-6d6a-4eb8-b7d4-d39fa732e93c.png)
 
 ## Proteus layout(Add pdf screen shot of circuit here)
- ![o3](https://user-images.githubusercontent.com/95067307/236770519-e1fbea8e-7c3e-43d8-8437-8e8c12d12e8e.png)
+ ![O4](https://user-images.githubusercontent.com/95067307/236770519-e1fbea8e-7c3e-43d8-8437-8e8c12d12e8e.png)
 
  
  
