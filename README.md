@@ -75,47 +75,137 @@ We are now at the last part of step by step guide on how to simulate STM32 proje
 Developed by:D.R.Vinuthna
 Reg no:212221230017
 ```
+
 ```
 #include "main.h"
+#include"stdio.h"
+#include"stdbool.h"
+bool pb;
+
+
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 
 int main(void)
 {
-  
-  HAL_Init();
+ 
 
+  HAL_Init();
   SystemClock_Config();
 
   MX_GPIO_Init();
-  
+
+
   while (1)
   {
-	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET);
-	  HAL_Delay(500);
-	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_SET);
-	  HAL_Delay(500);
-    
+    pb=  HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_4);
+    if(pb==0)
+    {
+    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_SET);
+    HAL_Delay(100);
+    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_RESET);
+    HAL_Delay(100);
+
+
+
+
+    }
+    else
+    {
+  	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_RESET);
+
+    	HAL_Delay(500);
+    }
+
+
+
   }
- 
 }
 
+void SystemClock_Config(void)
+{
+  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
+  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+
+  __HAL_RCC_PWR_CLK_ENABLE();
+  __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE2);
+ 
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
+  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
+  RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;
+  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
+                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;
+  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
+  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)
+  {
+    Error_Handler();
+  }
+}
+
+
+static void MX_GPIO_Init(void)
+{
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
+
+ 
+  __HAL_RCC_GPIOA_CLK_ENABLE();
+
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_RESET);
+
+  GPIO_InitStruct.Pin = GPIO_PIN_4;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+
+  GPIO_InitStruct.Pin = GPIO_PIN_5;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+}
+
+
+void Error_Handler(void)
+{
+  
+  __disable_irq();
+  while (1)
+  {
+  }
+}
+
+#ifdef  USE_FULL_ASSERT
+
+void assert_failed(uint8_t *file, uint32_t line)
+{
+  
+}
+#endif 
 ```
-
-
 
 ## Output screen shots of proteus  :
 
 ## on:
-![o1](https://user-images.githubusercontent.com/95067307/236769842-8c2e9a73-fa1b-47af-8051-2a1f515b1206.png)
+![01](https://user-images.githubusercontent.com/95067307/236776492-db1b259a-03bb-44f4-a026-9df17c07fe83.png)
+
 ## off:
-![o2](https://user-images.githubusercontent.com/95067307/236769895-dcfbfa6e-6d6a-4eb8-b7d4-d39fa732e93c.png)
+![o2](https://user-images.githubusercontent.com/95067307/236776616-9aa93949-ce6e-4d06-9e14-d1de51dee0df.png)
 
 ## Proteus layout(Add pdf screen shot of circuit here)
-![o5](https://user-images.githubusercontent.com/95067307/236773625-628e0092-57a5-4bf2-920f-1d7bf0fb7eda.png)
+ ![o3](https://user-images.githubusercontent.com/95067307/236776758-741d2104-0883-46f6-a35b-ab9c03ab73bd.png)
 
- 
- 
  
 ## Result :
 Interfacing a digital output and digital input  with ARM microcontroller are simulated in proteus and the results are verified.
